@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { Button, Select } from 'antd';
+
 import bubbleSort from '../../utils/bubbleSort';
 import mergeSort from '../../utils/mergeSort';
 
@@ -12,7 +14,11 @@ const StyledDiv = styled.div`
 `;
 
 const StyledHeader = styled.header`
-  height: 70px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
   background-color: #282a36;
   color: #f5f5f5;
 `;
@@ -24,7 +30,10 @@ const StyledMain = styled.main`
 `;
 
 const StyledFooter = styled.footer`
-  height: 70px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #282a36;
   color: #f5f5f5;
 `;
@@ -45,27 +54,63 @@ const Bar = styled.span`
   background-color: #282a36;
 `;
 
+const buttonStyle = { borderColor: '#50fa7b', color: '#50fa7b' };
+
 const HomePage = () => {
-  const min = 10;
-  const max = 700;
-  const numberOfBars = 100;
+  const [numberOfBars, setNumberOfBars] = useState(100);
+  const [sortAlgorythm, setSortAlgorythm] = useState('mergesort');
+  const [sorting, setSorting] = useState(false);
   const [bars, setBars] = useState([]);
 
-  useEffect(() => {
+  const generateNewArray = () => {
     const newBars = [];
     for (let i = 0; i < numberOfBars; i++) {
-      newBars.push(Number(generateRandomNumber(min, max)));
+      newBars.push(Number(generateRandomNumber()));
     }
-    mergeSort(newBars, setBars);
-  }, [numberOfBars]);
+    setBars(newBars);
+  };
 
-  const generateRandomNumber = (min, max) => {
+  const handleSortClick = async () => {
+    setSorting(true);
+    switch (sortAlgorythm) {
+      case 'bubblesort':
+        await bubbleSort(bars, setBars);
+        break;
+      case 'mergesort':
+        await mergeSort(bars, setBars);
+        break;
+      default:
+        break;
+    }
+    setSorting(false);
+  };
+
+  const generateRandomNumber = () => {
     return (Math.random() * 100).toFixed(2);
   };
 
+  useEffect(() => {
+    generateNewArray();
+  }, []);
+
   return (
     <StyledDiv>
-      <StyledHeader></StyledHeader>
+      <StyledHeader>
+        <Button onClick={handleSortClick} size='large' ghost style={buttonStyle} disabled={sorting}>
+          Sort!!
+        </Button>
+        <Button onClick={generateNewArray} size='large' ghost disabled={sorting}>
+          Generate New Array!
+        </Button>
+        <Select value={sortAlgorythm} onChange={setSortAlgorythm} style={{ width: '120px' }}>
+          <Select.OptGroup label='O(n log n)'>
+            <Select.Option value='mergesort'>MergeSort</Select.Option>
+          </Select.OptGroup>
+          <Select.OptGroup label='O(n^2)'>
+            <Select.Option value='bubblesort'>BubbleSort</Select.Option>
+          </Select.OptGroup>
+        </Select>
+      </StyledHeader>
       <StyledMain>
         <BarContainer>
           {bars.map((size, index) => (
@@ -73,7 +118,7 @@ const HomePage = () => {
           ))}
         </BarContainer>
       </StyledMain>
-      <StyledFooter></StyledFooter>
+      <StyledFooter>Created by Arthur Sakemi 2020</StyledFooter>
     </StyledDiv>
   );
 };
