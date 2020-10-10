@@ -1,6 +1,9 @@
 import { delay } from './delay';
-
-const bubbleSort = async (originalArray, setArray) => {
+/**
+ * @param {Number[]} originalArray the array to be sorted
+ * @param {Function} setArray setter for the array state
+ */
+async function bubbleSort(originalArray, setArray) {
   let array = [...originalArray];
 
   for (let i = 1; i < array.length; i += 1) {
@@ -15,6 +18,6 @@ const bubbleSort = async (originalArray, setArray) => {
       array = [...array];
     }
   }
-};
+}
 
 export default bubbleSort;
