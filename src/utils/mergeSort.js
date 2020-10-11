@@ -46,13 +46,12 @@ const merge = async (start, mid, end, array, setArray) => {
       array.splice(j++, 1);
       array.splice(i++, 0, temp);
       mid++;
+      await delay(5);
+      setArray([...array]);
     }
-    await delay(5);
-    setArray([...array]);
   }
   while (i < mid) {
     i++;
-    await delay(5);
   }
   while (j < end) {
     let temp = array[j];

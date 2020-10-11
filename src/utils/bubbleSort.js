@@ -12,10 +12,10 @@ async function bubbleSort(originalArray, setArray) {
         let temp = array[j + 1];
         array[j + 1] = array[j];
         array[j] = temp;
+        await delay(1);
+        setArray(array);
+        array = [...array];
       }
-      await delay(1);
-      setArray(array);
-      array = [...array];
     }
   }
 }

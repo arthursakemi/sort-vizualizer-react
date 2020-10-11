@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Select } from 'antd';
+import { Button, Select, Slider } from 'antd';
 
 import bubbleSort from '../../utils/bubbleSort';
 import mergeSort from '../../utils/mergeSort';
@@ -15,10 +15,10 @@ const StyledDiv = styled.div`
 
 const StyledHeader = styled.header`
   padding: 20px;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 200px) 300px;
   gap: 20px;
   align-items: center;
-  justify-content: flex-start;
   background-color: #282a36;
   color: #f5f5f5;
 `;
@@ -42,7 +42,7 @@ const BarContainer = styled.div`
   height: 100%;
   display: flex;
   padding: 20px;
-  gap: 1px;
+
   justify-content: center;
   align-items: flex-end;
   border: 2px solid black;
@@ -55,6 +55,8 @@ const Bar = styled.span`
 `;
 
 const buttonStyle = { borderColor: '#50fa7b', color: '#50fa7b' };
+
+const sliderMarks = { 50: '50', 100: '100', 200: '200', 300: '300' };
 
 const HomePage = () => {
   const [numberOfBars, setNumberOfBars] = useState(100);
@@ -91,18 +93,18 @@ const HomePage = () => {
 
   useEffect(() => {
     generateNewArray();
-  }, []);
+  }, [numberOfBars]);
 
   return (
     <StyledDiv>
       <StyledHeader>
-        <Button onClick={handleSortClick} size='large' ghost style={buttonStyle} disabled={sorting}>
+        <Button onClick={handleSortClick} size='large' ghost style={buttonStyle} disabled={sorting} block>
           Sort!!
         </Button>
-        <Button onClick={generateNewArray} size='large' ghost disabled={sorting}>
+        <Button onClick={generateNewArray} size='large' ghost disabled={sorting} block>
           Generate New Array!
         </Button>
-        <Select value={sortAlgorythm} onChange={setSortAlgorythm} style={{ width: '120px' }}>
+        <Select value={sortAlgorythm} onChange={setSortAlgorythm} size='large' block>
           <Select.OptGroup label='O(n log n)'>
             <Select.Option value='mergesort'>MergeSort</Select.Option>
           </Select.OptGroup>
@@ -110,6 +112,7 @@ const HomePage = () => {
             <Select.Option value='bubblesort'>BubbleSort</Select.Option>
           </Select.OptGroup>
         </Select>
+        <Slider marks={sliderMarks} value={numberOfBars} onChange={setNumberOfBars} min={50} max={300} step={10} style={{ color: 'F5f5f5' }} />
       </StyledHeader>
       <StyledMain>
         <BarContainer>
