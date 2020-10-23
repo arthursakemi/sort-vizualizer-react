@@ -15,12 +15,17 @@ const StyledDiv = styled.div`
 
 const StyledHeader = styled.header`
   padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 200px) 300px;
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   align-items: center;
   background-color: #282a36;
   color: #f5f5f5;
+`;
+
+const SliderContainer = styled.div`
+  width: 100%;
+  min-width: 300px;
 `;
 
 const StyledMain = styled.main`
@@ -54,7 +59,7 @@ const Bar = styled.span`
   background-color: #282a36;
 `;
 
-const buttonStyle = { borderColor: '#50fa7b', color: '#50fa7b' };
+const buttonStyle = { borderColor: '#50fa7b', color: '#50fa7b', flex: '1 1 150px' };
 
 const sliderMarks = { 50: '50', 100: '100', 200: '200', 300: '300' };
 
@@ -101,10 +106,10 @@ const HomePage = () => {
         <Button onClick={handleSortClick} size='large' ghost style={buttonStyle} disabled={sorting} block>
           Sort!!
         </Button>
-        <Button onClick={generateNewArray} size='large' ghost disabled={sorting} block>
+        <Button onClick={generateNewArray} size='large' ghost disabled={sorting} style={{ flex: '1 1 150px' }} block>
           Generate New Array!
         </Button>
-        <Select value={sortAlgorythm} onChange={setSortAlgorythm} size='large' block>
+        <Select value={sortAlgorythm} onChange={setSortAlgorythm} size='large' style={{ flex: '1 1 150px' }} block>
           <Select.OptGroup label='O(n log n)'>
             <Select.Option value='mergesort'>MergeSort</Select.Option>
           </Select.OptGroup>
@@ -112,7 +117,9 @@ const HomePage = () => {
             <Select.Option value='bubblesort'>BubbleSort</Select.Option>
           </Select.OptGroup>
         </Select>
-        <Slider marks={sliderMarks} value={numberOfBars} onChange={setNumberOfBars} min={50} max={300} step={10} style={{ color: 'F5f5f5' }} />
+        <SliderContainer>
+          <Slider marks={sliderMarks} value={numberOfBars} onChange={setNumberOfBars} min={50} max={300} step={10} style={{ flex: '1 1 150px' }} />
+        </SliderContainer>
       </StyledHeader>
       <StyledMain>
         <BarContainer>

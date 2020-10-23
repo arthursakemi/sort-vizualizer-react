@@ -13,8 +13,8 @@ export default createGlobalStyle`
         color: #333;
         font-family: sans-serif;
     }
+
     .App {
-        width:100vw;
-        height:100vh;
+        height: 100vh;
     }
 `;
