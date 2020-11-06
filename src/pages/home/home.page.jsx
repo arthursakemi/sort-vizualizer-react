@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { Button, Select, Slider } from 'antd';
 
+import Footer from '../../components/footer/Footer.component';
+
 import bubbleSort from '../../utils/bubbleSort';
 import mergeSort from '../../utils/mergeSort';
 
@@ -32,15 +34,6 @@ const StyledMain = styled.main`
   background-color: #f5f5f5;
   flex-grow: 1;
   padding: 20px;
-`;
-
-const StyledFooter = styled.footer`
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #282a36;
-  color: #f5f5f5;
 `;
 
 const BarContainer = styled.div`
@@ -128,7 +121,7 @@ const HomePage = () => {
           ))}
         </BarContainer>
       </StyledMain>
-      <StyledFooter>Created by Arthur Sakemi 2020</StyledFooter>
+      <Footer />
     </StyledDiv>
   );
 };
