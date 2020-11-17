@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { RangeInput, Button, Select, Box, Footer, Grid } from 'grommet';
+import { Box, Button, Footer, Grid, RangeInput, Select } from 'grommet';
 
 import sortingAlgorithms from '../../sortingAlgorithms';
 
@@ -34,36 +34,35 @@ const BarContainer = styled.div`
 `;
 
 const Bar = styled.span`
-  width: 10px;
+  width: 5px;
   background-color: #282a36;
 `;
 
 const HomePage = () => {
   const [numberOfBars, setNumberOfBars] = useState(100);
   const [sortAlgorithm, setSortAlgorithm] = useState('mergeSort');
-  const [sorting, setSorting] = useState(false);
   const [bars, setBars] = useState([]);
+  const [sorting, setSorting] = useState(false);
+  const [green, setGreen] = useState([]);
 
   const onSliderChange = (e) => {
     const { value } = e.target;
     setNumberOfBars(Number(value));
   };
 
-  const generateNewArray = useCallback(() => {
-    const newBars = Array(numberOfBars).fill().map(generateRandomNumber);
-    console.log(newBars);
-    setBars(newBars);
-  }, [numberOfBars]);
-
   const handleSortClick = async () => {
     setSorting(true);
-    await sortingAlgorithms[sortAlgorithm](bars, setBars);
+    await sortingAlgorithms[sortAlgorithm](bars, setBars, setGreen);
     setSorting(false);
   };
 
   const generateRandomNumber = () => {
     return Number((Math.random() * 100).toFixed(2));
   };
+  const generateNewArray = useCallback(() => {
+    const newBars = Array(numberOfBars).fill().map(generateRandomNumber);
+    setBars(newBars);
+  }, [numberOfBars]);
 
   useEffect(() => {
     generateNewArray();
@@ -97,7 +96,7 @@ const HomePage = () => {
       <StyledMain>
         <BarContainer>
           {bars.map((size, index) => (
-            <Bar key={index} style={{ height: `${size}%` }} />
+            <Bar key={index} style={{ height: `${size}%`, backgroundColor: `${green.includes(index) ? '#6FFFB0' : ' #282a36'}` }} />
           ))}
         </BarContainer>
       </StyledMain>
