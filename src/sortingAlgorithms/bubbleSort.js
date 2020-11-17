@@ -1,4 +1,4 @@
-import { delay } from './delay';
+import { delay } from '../helperFunctions/delay';
 /**
  * @param {Number[]} originalArray the array to be sorted
  * @param {Function} setArray setter for the array state

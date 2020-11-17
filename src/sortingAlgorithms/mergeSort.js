@@ -1,4 +1,4 @@
-import { delay } from './delay';
+import { delay } from '../helperFunctions/delay';
 
 /**
  * Inplace implementation of mergesort for vizualization purposes.
@@ -9,6 +9,7 @@ import { delay } from './delay';
 const mergeSort = async (originalArray, setArray) => {
   let array = [...originalArray];
   await innerMergeSort(0, array.length, array, setArray);
+  console.log(array);
 };
 
 /**
