@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Select, Slider } from 'antd';
+import { RangeInput, Button, Select, Box, Footer, Grid } from 'grommet';
 
-import Footer from '../../components/footer/Footer.component';
-
-import bubbleSort from '../../utils/bubbleSort';
-import mergeSort from '../../utils/mergeSort';
+import sortingAlgorithms from '../../sortingAlgorithms';
 
 const StyledDiv = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const StyledHeader = styled.header`
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-  background-color: #282a36;
-  color: #f5f5f5;
 `;
 
 const SliderContainer = styled.div`
@@ -48,80 +35,75 @@ const BarContainer = styled.div`
 
 const Bar = styled.span`
   width: 10px;
-  height: ${({ height }) => height}%;
   background-color: #282a36;
 `;
 
-const buttonStyle = { borderColor: '#50fa7b', color: '#50fa7b', flex: '1 1 150px' };
-
-const sliderMarks = { 50: '50', 100: '100', 200: '200', 300: '300' };
-
 const HomePage = () => {
   const [numberOfBars, setNumberOfBars] = useState(100);
-  const [sortAlgorythm, setSortAlgorythm] = useState('mergesort');
+  const [sortAlgorithm, setSortAlgorithm] = useState('mergeSort');
   const [sorting, setSorting] = useState(false);
   const [bars, setBars] = useState([]);
 
-  const generateNewArray = () => {
-    const newBars = [];
-    for (let i = 0; i < numberOfBars; i++) {
-      newBars.push(Number(generateRandomNumber()));
-    }
-    setBars(newBars);
+  const onSliderChange = (e) => {
+    const { value } = e.target;
+    setNumberOfBars(Number(value));
   };
+
+  const generateNewArray = useCallback(() => {
+    const newBars = Array(numberOfBars).fill().map(generateRandomNumber);
+    console.log(newBars);
+    setBars(newBars);
+  }, [numberOfBars]);
 
   const handleSortClick = async () => {
     setSorting(true);
-    switch (sortAlgorythm) {
-      case 'bubblesort':
-        await bubbleSort(bars, setBars);
-        break;
-      case 'mergesort':
-        await mergeSort(bars, setBars);
-        break;
-      default:
-        break;
-    }
+    await sortingAlgorithms[sortAlgorithm](bars, setBars);
     setSorting(false);
   };
 
   const generateRandomNumber = () => {
-    return (Math.random() * 100).toFixed(2);
+    return Number((Math.random() * 100).toFixed(2));
   };
 
   useEffect(() => {
     generateNewArray();
-  }, [numberOfBars]);
+  }, [generateNewArray]);
+
+  const selectOptions = [
+    { label: 'MergeSort', value: 'mergeSort' },
+    { label: 'BubbleSort', value: 'bubbleSort' },
+  ];
 
   return (
     <StyledDiv>
-      <StyledHeader>
-        <Button onClick={handleSortClick} size='large' ghost style={buttonStyle} disabled={sorting} block>
-          Sort!!
-        </Button>
-        <Button onClick={generateNewArray} size='large' ghost disabled={sorting} style={{ flex: '1 1 150px' }} block>
-          Generate New Array!
-        </Button>
-        <Select value={sortAlgorythm} onChange={setSortAlgorythm} size='large' style={{ flex: '1 1 150px' }} block>
-          <Select.OptGroup label='O(n log n)'>
-            <Select.Option value='mergesort'>MergeSort</Select.Option>
-          </Select.OptGroup>
-          <Select.OptGroup label='O(n^2)'>
-            <Select.Option value='bubblesort'>BubbleSort</Select.Option>
-          </Select.OptGroup>
-        </Select>
+      <Grid columns={['repeat(3, minmax(150px, 1fr))']} gap='10px' pad='20px'>
+        <Box fill>
+          <Button onClick={handleSortClick} label='Sort!!' disabled={sorting} fill />
+        </Box>
+        <Box fill>
+          <Button onClick={generateNewArray} label='Generate New Array!' disabled={sorting} fill />
+        </Box>
+        <Select
+          value={sortAlgorithm}
+          options={selectOptions}
+          labelKey='label'
+          valueKey={{ key: 'value', reduce: true }}
+          onChange={({ value }) => setSortAlgorithm(value)}
+        />
         <SliderContainer>
-          <Slider marks={sliderMarks} value={numberOfBars} onChange={setNumberOfBars} min={50} max={300} step={10} style={{ flex: '1 1 150px' }} />
+          <RangeInput value={numberOfBars} onChange={onSliderChange} min={50} max={300} step={10} />
         </SliderContainer>
-      </StyledHeader>
+      </Grid>
       <StyledMain>
         <BarContainer>
           {bars.map((size, index) => (
-            <Bar key={index} height={size} />
+            <Bar key={index} style={{ height: `${size}%` }} />
           ))}
         </BarContainer>
       </StyledMain>
-      <Footer />
+      <Footer justify='center' pad='20px'>
+        Created by @arthursakemi 2020
+      </Footer>
     </StyledDiv>
   );
 };
