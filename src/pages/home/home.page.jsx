@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Box, Button, Footer, Grid, RangeInput, Select } from 'grommet';
 
 import sortingAlgorithms from '../../sortingAlgorithms';
+import generateRandomNumber from '../../helperFunctions/generateRandomNumber';
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -34,7 +35,7 @@ const BarContainer = styled.div`
 `;
 
 const Bar = styled.span`
-  width: 5px;
+  flex: 1 1 1px;
   background-color: #282a36;
 `;
 
@@ -54,11 +55,9 @@ const HomePage = () => {
     setSorting(true);
     await sortingAlgorithms[sortAlgorithm](bars, setBars, setGreen);
     setSorting(false);
+    setGreen([]);
   };
 
-  const generateRandomNumber = () => {
-    return Number((Math.random() * 100).toFixed(2));
-  };
   const generateNewArray = useCallback(() => {
     const newBars = Array(numberOfBars).fill().map(generateRandomNumber);
     setBars(newBars);
