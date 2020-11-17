@@ -5,11 +5,11 @@ import { delay } from '../helperFunctions/delay';
  * "Overload" method with fewer parameters to ease of use
  * @param {Number[]} originalArray the array to be sorted
  * @param {Function} setArray setter for the array state
+ * @param {Function} setGreen setter for the green state
  */
-const mergeSort = async (originalArray, setArray) => {
+const mergeSort = async (originalArray, setArray, setGreen) => {
   let array = [...originalArray];
-  await innerMergeSort(0, array.length, array, setArray);
-  console.log(array);
+  await innerMergeSort(0, array.length, array, setArray, setGreen);
 };
 
 /**
@@ -18,13 +18,14 @@ const mergeSort = async (originalArray, setArray) => {
  * @param { number } end index of the end of the subArray
  * @param { number[] } array the array to be sorted
  * @param { Function } setArray setter for the array state
+ *  * @param {Function} setGreen setter for the green state
  */
-const innerMergeSort = async (start, end, array, setArray) => {
+const innerMergeSort = async (start, end, array, setArray, setGreen) => {
   if (start < end - 1) {
     const mid = Math.floor((start + end) / 2);
-    await innerMergeSort(start, mid, array, setArray);
-    await innerMergeSort(mid, end, array, setArray);
-    await merge(start, mid, end, array, setArray);
+    await innerMergeSort(start, mid, array, setArray, setGreen);
+    await innerMergeSort(mid, end, array, setArray, setGreen);
+    await merge(start, mid, end, array, setArray, setGreen);
   }
 };
 
@@ -35,8 +36,9 @@ const innerMergeSort = async (start, end, array, setArray) => {
  * @param { number } end index of the end of the subArray
  * @param { number[] } array the array to be sorted
  * @param { Function } setArray setter for the array state
+ *  * @param {Function} setGreen setter for the green state
  */
-const merge = async (start, mid, end, array, setArray) => {
+const merge = async (start, mid, end, array, setArray, setGreen) => {
   let i = start;
   let j = mid;
   while (i < mid && j < end) {
@@ -47,9 +49,10 @@ const merge = async (start, mid, end, array, setArray) => {
       array.splice(j++, 1);
       array.splice(i++, 0, temp);
       mid++;
-      await delay(5);
+      await delay(1);
       setArray([...array]);
     }
+    setGreen([i, j]);
   }
   while (i < mid) {
     i++;
@@ -58,7 +61,7 @@ const merge = async (start, mid, end, array, setArray) => {
     let temp = array[j];
     array.splice(j++, 1);
     array.splice(i++, 0, temp);
-    await delay(5);
+    await delay(1);
     setArray([...array]);
   }
 };
