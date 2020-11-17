@@ -13,8 +13,4 @@ export default createGlobalStyle`
         color: #333;
         font-family: sans-serif;
     }
-
-    .App {
-        height: 100vh;
-    }
 `;
