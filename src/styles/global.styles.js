@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import 'antd/dist/antd.css';
 
 export default createGlobalStyle`
     *{
@@ -12,9 +11,5 @@ export default createGlobalStyle`
         font-size: 14px;
         color: #333;
         font-family: sans-serif;
-    }
-
-    .App {
-        height: 100vh;
     }
 `;
