@@ -1,22 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Box, Button, Footer, Grid, RangeInput, Select } from 'grommet';
+import { Box, Button, Footer, Main, RangeInput, Select } from 'grommet';
 
 import sortingAlgorithms from '../../sortingAlgorithms';
 import generateRandomNumber from '../../helperFunctions/generateRandomNumber';
-
-const StyledDiv = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SliderContainer = styled.div`
-  width: 100%;
-  min-width: 300px;
-`;
 
 const StyledMain = styled.main`
   background-color: #f5f5f5;
@@ -38,6 +26,12 @@ const Bar = styled.span`
   flex: 1 1 1px;
   background-color: #282a36;
 `;
+
+const ControlBox = ({ children }) => (
+  <Box flex={{ grow: 1, shrink: 1 }} basis='300px'>
+    {children}
+  </Box>
+);
 
 const HomePage = () => {
   const [numberOfBars, setNumberOfBars] = useState(100);
@@ -70,39 +64,42 @@ const HomePage = () => {
   const selectOptions = [
     { label: 'MergeSort', value: 'mergeSort' },
     { label: 'BubbleSort', value: 'bubbleSort' },
+    //{ label: 'QuickSort', value: 'quicksort' },
   ];
 
   return (
-    <StyledDiv>
-      <Grid columns={['repeat(3, minmax(150px, 1fr))']} gap='10px' pad='20px'>
-        <Box fill>
-          <Button onClick={handleSortClick} label='Sort!!' disabled={sorting} fill />
-        </Box>
-        <Box fill>
-          <Button onClick={generateNewArray} label='Generate New Array!' disabled={sorting} fill />
-        </Box>
-        <Select
-          value={sortAlgorithm}
-          options={selectOptions}
-          labelKey='label'
-          valueKey={{ key: 'value', reduce: true }}
-          onChange={({ value }) => setSortAlgorithm(value)}
-        />
-        <SliderContainer>
-          <RangeInput value={numberOfBars} onChange={onSliderChange} min={50} max={300} step={10} />
-        </SliderContainer>
-      </Grid>
+    <Main>
+      <Box pad='20px' direction='row' wrap style={{ gap: '10px' }} align='center'>
+        <ControlBox>
+          <Button onClick={handleSortClick} label='Sort!!' size='large' disabled={sorting} fill />
+        </ControlBox>
+        <ControlBox>
+          <Button onClick={generateNewArray} label='Generate New Array!' size='large' disabled={sorting} fill />
+        </ControlBox>
+        <ControlBox>
+          <Select
+            value={sortAlgorithm}
+            options={selectOptions}
+            labelKey='label'
+            valueKey={{ key: 'value', reduce: true }}
+            onChange={({ value }) => setSortAlgorithm(value)}
+          />
+        </ControlBox>
+      </Box>
+      <Box pad='20px' fill='horizontal'>
+        <RangeInput value={numberOfBars} onChange={onSliderChange} min={50} max={300} step={10} />
+      </Box>
       <StyledMain>
         <BarContainer>
           {bars.map((size, index) => (
-            <Bar key={index} style={{ height: `${size}%`, backgroundColor: `${green.includes(index) ? '#6FFFB0' : ' #282a36'}` }} />
+            <Bar key={`bar${index}`} style={{ height: `${size}%`, backgroundColor: `${green.includes(index) ? '#6FFFB0' : ' #282a36'}` }} />
           ))}
         </BarContainer>
       </StyledMain>
       <Footer justify='center' pad='20px'>
-        Created by @arthursakemi 2020
+        @arthursakemi 2020
       </Footer>
-    </StyledDiv>
+    </Main>
   );
 };
 
